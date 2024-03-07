@@ -22,6 +22,12 @@ case class ValidationFailuresResponse(failures: Seq[ValidationFailure])
 
 object ValidationFailuresResponse {
 
+  val cannedResponse: ValidationFailuresResponse = ValidationFailuresResponse(
+    Seq(
+      ValidationFailure("OPENAPI", "Invalid OAS document")
+    )
+  )
+
   implicit val formatValidationFailuresResponse: Format[ValidationFailuresResponse] = Json.format[ValidationFailuresResponse]
 
 }
