@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.simpleapideploymentstubs.config
+package uk.gov.hmrc.simpleapideploymentstubs.models
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.libs.json.{Format, Json}
 
-@Singleton
-class AppConfig @Inject()(config: Configuration) {
+case class GenerateResponse(projectId: Int, lineOfBusiness: String, branchName: String, mergeRequestIid: Int)
 
-  val appName: String = config.get[String]("appName")
+object GenerateResponse {
+
+  def apply(metadata: Metadata): GenerateResponse = {
+    GenerateResponse(101, metadata.lineOfBusiness, "stub-branch", 102)
+  }
+
+  implicit val formatGenerateResponse: Format[GenerateResponse] = Json.format[GenerateResponse]
+
 }

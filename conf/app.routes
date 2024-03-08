@@ -1,3 +1,4 @@
 # microservice specific routes
 
-GET        /hello-world             uk.gov.hmrc.simpleapideploymentstubs.controllers.MicroserviceHelloWorldController.hello
+POST    /v1/simple-api-deployment/validate              uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.validate()
+POST    /v1/simple-api-deployment/generate              uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.generate()

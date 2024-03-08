@@ -1,7 +1,6 @@
-
 # simple-api-deployment-stubs
 
-This is a placeholder README.md for a new repository
+Stubs for HIP's Simple API Deployment service.
 
 ### License
 
