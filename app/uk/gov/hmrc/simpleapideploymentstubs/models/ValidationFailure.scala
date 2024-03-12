@@ -22,6 +22,8 @@ case class ValidationFailure(`type`: String, message: String)
 
 object ValidationFailure {
 
+  val cannedResponse: Seq[ValidationFailure] = Seq(ValidationFailure("HIP", "Invalid OAS document"))
+
   implicit val formatValidationFailure: Format[ValidationFailure] = Json.format[ValidationFailure]
 
 }
