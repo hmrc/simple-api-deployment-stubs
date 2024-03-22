@@ -18,14 +18,14 @@ package uk.gov.hmrc.simpleapideploymentstubs.models
 
 import play.api.libs.json.{Format, Json}
 
-case class GenerateResponse(projectId: Int, lineOfBusiness: String, branchName: String, mergeRequestIid: Int)
+case class DeploymentsResponse(id: String, version: String, mergeRequestIid: Int, uri: String)
 
-object GenerateResponse {
+object DeploymentsResponse {
 
-  def apply(metadata: Metadata): GenerateResponse = {
-    GenerateResponse(101, metadata.lineOfBusiness, "stub-branch", 102)
+  def apply(metadata: Metadata): DeploymentsResponse = {
+    DeploymentsResponse("test-id", "1.0.0", 102, "http://example.com/version/1.0.0")
   }
 
-  implicit val formatGenerateResponse: Format[GenerateResponse] = Json.format[GenerateResponse]
+  implicit val formatDeploymentsResponse: Format[DeploymentsResponse] = Json.format[DeploymentsResponse]
 
 }

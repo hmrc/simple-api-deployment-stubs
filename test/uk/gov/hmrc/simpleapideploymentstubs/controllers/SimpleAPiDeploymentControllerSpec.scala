@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import play.api.mvc.MultipartFormData
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.simpleapideploymentstubs.models.{GenerateResponse, Metadata, ValidationFailure}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentsResponse, Metadata, ValidationFailure}
 
 class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with OptionValues {
 
@@ -60,8 +60,8 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
     }
   }
 
-  "generate" - {
-    "must return 200 Ok and a GenerateResponse when the request is valid" in {
+  "deployments" - {
+    "must return 200 Ok and a DeploymentsResponse when the request is valid" in {
       val application = buildApplication()
 
       val metadata = Metadata(
@@ -72,7 +72,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       )
 
       running(application) {
-        val request = FakeRequest(routes.SimpleAPiDeploymentController.generate())
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.deployments())
           .withMultipartFormDataBody(
             MultipartFormData(
               dataParts = Map(
@@ -87,7 +87,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         val result = route(application, request).value
 
         status(result) mustBe OK
-        contentAsJson(result) mustBe Json.toJson(GenerateResponse(metadata))
+        contentAsJson(result) mustBe Json.toJson(DeploymentsResponse(metadata))
       }
     }
 
@@ -102,7 +102,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       )
 
       running(application) {
-        val request = FakeRequest(routes.SimpleAPiDeploymentController.generate())
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.deployments())
           .withMultipartFormDataBody(
             MultipartFormData(
               dataParts = Map(
@@ -125,7 +125,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       val application = buildApplication()
 
       running(application) {
-        val request = FakeRequest(routes.SimpleAPiDeploymentController.generate())
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.deployments())
           .withMultipartFormDataBody(
             MultipartFormData(
               dataParts = Map(
