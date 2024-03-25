@@ -23,7 +23,7 @@ import play.api.libs.Files
 import play.api.libs.json.Json
 import play.api.mvc.{Action, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.simpleapideploymentstubs.models.{GenerateResponse, Metadata, ValidationFailure}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentsResponse, Metadata, ValidationFailure}
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
@@ -38,7 +38,7 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
       }
   }
 
-  def generate(): Action[MultipartFormData[Files.TemporaryFile]] = Action(parse.multipartFormData) {
+  def deployments(): Action[MultipartFormData[Files.TemporaryFile]] = Action(parse.multipartFormData) {
     request =>
       (request.body.dataParts.get("metadata"), request.body.dataParts.get("openapi")) match {
         case (Some(Seq(metadata)), Some(Seq(openapi))) =>
@@ -46,7 +46,7 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
             _ => BadRequest,
             validMetadata =>
               if (validOas(openapi)) {
-                Ok(Json.toJson(GenerateResponse(validMetadata)))
+                Ok(Json.toJson(DeploymentsResponse(validMetadata)))
               }
               else {
                 BadRequest(Json.toJson(ValidationFailure.cannedResponse))

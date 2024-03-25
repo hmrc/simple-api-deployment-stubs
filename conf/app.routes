@@ -1,4 +1,4 @@
 # microservice specific routes
 
 POST    /v1/simple-api-deployment/validate              uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.validate()
-POST    /v1/simple-api-deployment/generate              uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.generate()
+POST    /v1/simple-api-deployment/deployments           uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.deployments()
