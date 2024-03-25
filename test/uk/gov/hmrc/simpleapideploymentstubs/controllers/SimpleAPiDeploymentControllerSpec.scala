@@ -142,6 +142,20 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         status(result) mustBe BAD_REQUEST
       }
     }
+
+    "deployment" - {
+      "must return 200 Ok and a DeploymentResponse" in {
+        val application = buildApplication()
+
+        running(application) {
+          val request = FakeRequest(routes.SimpleAPiDeploymentController.deployment("a publisher ref"))
+
+          val result = route(application, request).value
+
+          status(result) mustBe OK
+        }
+      }
+    }
   }
 
   private def buildApplication(): Application = {

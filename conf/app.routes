@@ -2,3 +2,4 @@
 
 POST    /v1/simple-api-deployment/validate              uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.validate()
 POST    /v1/simple-api-deployment/deployments           uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.deployments()
+GET     /v1/oas-deployments/:publisherReference         uk.gov.hmrc.simpleapideploymentstubs.controllers.SimpleAPiDeploymentController.deployment(publisherReference: String)

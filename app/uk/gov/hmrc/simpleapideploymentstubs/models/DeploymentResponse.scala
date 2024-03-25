@@ -18,14 +18,16 @@ package uk.gov.hmrc.simpleapideploymentstubs.models
 
 import play.api.libs.json.{Format, Json}
 
-case class DeploymentsResponse(id: String, version: String, mergeRequestIid: Int, uri: String)
+import java.time.LocalDateTime
 
-object DeploymentsResponse {
+case class DeploymentResponse(id: String, deploymentTimestamp: LocalDateTime)
 
-  def apply(metadata: Metadata): DeploymentsResponse = {
-    DeploymentsResponse("test-id", "1.0.0", 102, "http://example.com/version/1.0.0")
+object DeploymentResponse {
+
+  def apply(publisherReference: String): DeploymentResponse = {
+    DeploymentResponse("publisherReference", LocalDateTime.now())
   }
 
-  implicit val formatDeploymentsResponse: Format[DeploymentsResponse] = Json.format[DeploymentsResponse]
+  implicit val formatDeploymentResponse: Format[DeploymentResponse] = Json.format[DeploymentResponse]
 
 }
