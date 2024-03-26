@@ -25,7 +25,7 @@ case class DeploymentResponse(id: String, deploymentTimestamp: LocalDateTime)
 object DeploymentResponse {
 
   def apply(publisherReference: String): DeploymentResponse = {
-    DeploymentResponse("publisherReference", LocalDateTime.now())
+    DeploymentResponse(publisherReference, LocalDateTime.now())
   }
 
   implicit val formatDeploymentResponse: Format[DeploymentResponse] = Json.format[DeploymentResponse]
