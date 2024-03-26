@@ -21,9 +21,9 @@ import io.swagger.v3.parser.OpenAPIV3Parser
 import io.swagger.v3.parser.core.models.ParseOptions
 import play.api.libs.Files
 import play.api.libs.json.Json
-import play.api.mvc.{Action, ControllerComponents, MultipartFormData}
+import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentsResponse, Metadata, ValidationFailure}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentResponse, DeploymentsResponse, Metadata, ValidationFailure}
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
@@ -61,6 +61,10 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
     options.setResolve(false)
 
     Option(new OpenAPIV3Parser().readContents(oas, null, options).getOpenAPI).isDefined
+  }
+
+  def deployment(publisherReference: String): Action[AnyContent] = Action {
+    Ok(Json.toJson(DeploymentResponse.apply(publisherReference)))
   }
 
 }
