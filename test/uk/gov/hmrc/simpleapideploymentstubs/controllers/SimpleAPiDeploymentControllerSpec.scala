@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import play.api.mvc.MultipartFormData
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentsResponse, Metadata, ValidationFailure}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentsResponse, FailuresResponse, Metadata}
 
 class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with OptionValues {
 
@@ -55,7 +55,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         val result = route(application, request).value
 
         status(result) mustBe BAD_REQUEST
-        contentAsJson(result) mustBe Json.toJson(ValidationFailure.cannedResponse)
+        contentAsJson(result) mustBe Json.toJson(FailuresResponse.cannedResponse)
       }
     }
   }
@@ -117,7 +117,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         val result = route(application, request).value
 
         status(result) mustBe BAD_REQUEST
-        contentAsJson(result) mustBe Json.toJson(ValidationFailure.cannedResponse)
+        contentAsJson(result) mustBe Json.toJson(FailuresResponse.cannedResponse)
       }
     }
 

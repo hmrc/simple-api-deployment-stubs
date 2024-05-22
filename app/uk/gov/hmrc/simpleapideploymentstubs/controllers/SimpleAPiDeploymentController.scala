@@ -23,7 +23,7 @@ import play.api.libs.Files
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentResponse, DeploymentsResponse, Metadata, ValidationFailure}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentResponse, DeploymentsResponse, FailuresResponse, Metadata}
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
@@ -34,7 +34,7 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
         Ok
       }
       else {
-        BadRequest(Json.toJson(ValidationFailure.cannedResponse))
+        BadRequest(Json.toJson(FailuresResponse.cannedResponse))
       }
   }
 
@@ -49,7 +49,7 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
                 Ok(Json.toJson(DeploymentsResponse(validMetadata)))
               }
               else {
-                BadRequest(Json.toJson(ValidationFailure.cannedResponse))
+                BadRequest(Json.toJson(FailuresResponse.cannedResponse))
               }
           )
         case _ => BadRequest
