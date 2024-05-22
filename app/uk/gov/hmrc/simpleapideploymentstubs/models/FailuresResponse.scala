@@ -18,12 +18,21 @@ package uk.gov.hmrc.simpleapideploymentstubs.models
 
 import play.api.libs.json.{Format, Json}
 
-case class ValidationFailure(`type`: String, message: String)
+case class FailuresResponse(code: String, reason: String, errors: Option[Seq[Error]])
 
-object ValidationFailure {
+object FailuresResponse {
 
-  val cannedResponse: Seq[ValidationFailure] = Seq(ValidationFailure("HIP", "Invalid OAS document"))
+  val cannedResponse: FailuresResponse = FailuresResponse(
+    code = "BAD_REQUEST",
+    reason = "Validation Failed.",
+    errors = Some(Seq(
+      Error(
+        `type` = "JSON",
+        message = "malformed or unreadable swagger supplied"
+      )
+    ))
+  )
 
-  implicit val formatValidationFailure: Format[ValidationFailure] = Json.format[ValidationFailure]
+  implicit val formatFailure: Format[FailuresResponse] = Json.format[FailuresResponse]
 
 }
