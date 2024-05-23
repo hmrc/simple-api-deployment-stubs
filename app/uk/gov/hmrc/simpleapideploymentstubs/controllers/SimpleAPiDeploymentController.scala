@@ -23,7 +23,7 @@ import play.api.libs.Files
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentResponse, DeploymentsResponse, FailuresResponse, Metadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentResponse, DeploymentsResponse, FailuresResponse, UpdateMetadata}
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
@@ -38,15 +38,33 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
       }
   }
 
-  def deployments(): Action[MultipartFormData[Files.TemporaryFile]] = Action(parse.multipartFormData) {
+  def create(): Action[MultipartFormData[Files.TemporaryFile]] = Action(parse.multipartFormData) {
     request =>
       (request.body.dataParts.get("metadata"), request.body.dataParts.get("openapi")) match {
         case (Some(Seq(metadata)), Some(Seq(openapi))) =>
-          Json.parse(metadata).validate[Metadata].fold(
+          Json.parse(metadata).validate[CreateMetadata].fold(
             _ => BadRequest,
             validMetadata =>
               if (validOas(openapi)) {
-                Ok(Json.toJson(DeploymentsResponse(validMetadata)))
+                Ok(Json.toJson(DeploymentsResponse(validMetadata.name)))
+              }
+              else {
+                BadRequest(Json.toJson(FailuresResponse.cannedResponse))
+              }
+          )
+        case _ => BadRequest
+      }
+  }
+
+  def update(serviceId: String): Action[MultipartFormData[Files.TemporaryFile]] = Action(parse.multipartFormData) {
+    request =>
+      (request.body.dataParts.get("metadata"), request.body.dataParts.get("openapi")) match {
+        case (Some(Seq(metadata)), Some(Seq(openapi))) =>
+          Json.parse(metadata).validate[UpdateMetadata].fold(
+            _ => BadRequest,
+            _ =>
+              if (validOas(openapi)) {
+                Ok(Json.toJson(DeploymentsResponse(serviceId)))
               }
               else {
                 BadRequest(Json.toJson(FailuresResponse.cannedResponse))
