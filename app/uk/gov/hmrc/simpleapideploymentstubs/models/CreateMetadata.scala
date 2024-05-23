@@ -18,17 +18,19 @@ package uk.gov.hmrc.simpleapideploymentstubs.models
 
 import play.api.libs.json.{Format, Json}
 
-case class DeploymentsResponse(id: String, version: String, mergeRequestIid: Int, uri: String)
+case class CreateMetadata(
+  lineOfBusiness: String,
+  name: String,
+  description: String,
+  egress: String,
+  passthrough: Option[Boolean] = None,
+  status: Option[String] = None,
+  domain: Option[String] = None,
+  subDomain: Option[String] = None
+)
 
-object DeploymentsResponse {
+object CreateMetadata {
 
-  def apply(serviceId: String): DeploymentsResponse = DeploymentsResponse(
-    id = serviceId,
-    version = "0.1.0",
-    mergeRequestIid = 123,
-    uri = s"/internal/v1/simple-api-deployment/deployments/$serviceId/status?mr-iid=123&version=0.1.0"
-  )
-
-  implicit val formatDeploymentsResponse: Format[DeploymentsResponse] = Json.format[DeploymentsResponse]
+  implicit val formatCreateMetadata: Format[CreateMetadata] = Json.format[CreateMetadata]
 
 }

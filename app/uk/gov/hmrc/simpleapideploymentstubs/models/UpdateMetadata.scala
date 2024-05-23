@@ -18,10 +18,13 @@ package uk.gov.hmrc.simpleapideploymentstubs.models
 
 import play.api.libs.json.{Format, Json}
 
-case class Metadata(lineOfBusiness: String, name: String, description: String, egress: String)
+case class UpdateMetadata(
+  description: String,
+  status: String
+)
 
-object Metadata {
+object UpdateMetadata {
 
-  implicit val formatMetadata: Format[Metadata] = Json.format[Metadata]
+  implicit val formatUpdateMetadata: Format[UpdateMetadata] = Json.format[UpdateMetadata]
 
 }

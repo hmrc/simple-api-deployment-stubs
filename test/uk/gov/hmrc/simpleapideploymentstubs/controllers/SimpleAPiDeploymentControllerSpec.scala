@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import play.api.mvc.MultipartFormData
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.simpleapideploymentstubs.models.{DeploymentsResponse, FailuresResponse, Metadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentsResponse, FailuresResponse, UpdateMetadata}
 
 class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with OptionValues {
 
@@ -60,11 +60,11 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
     }
   }
 
-  "deployments" - {
+  "create" - {
     "must return 200 Ok and a DeploymentsResponse when the request is valid" in {
       val application = buildApplication()
 
-      val metadata = Metadata(
+      val metadata = CreateMetadata(
         lineOfBusiness = "test-lob",
         name = "test-name",
         description = "test-description",
@@ -72,7 +72,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       )
 
       running(application) {
-        val request = FakeRequest(routes.SimpleAPiDeploymentController.deployments())
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.create())
           .withMultipartFormDataBody(
             MultipartFormData(
               dataParts = Map(
@@ -87,14 +87,14 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         val result = route(application, request).value
 
         status(result) mustBe OK
-        contentAsJson(result) mustBe Json.toJson(DeploymentsResponse(metadata))
+        contentAsJson(result) mustBe Json.toJson(DeploymentsResponse(metadata.name))
       }
     }
 
     "must return 400 BadRequest and a ValidationFailuresResponse when the OAS document is invalid" in {
       val application = buildApplication()
 
-      val metadata = Metadata(
+      val metadata = CreateMetadata(
         lineOfBusiness = "test-lob",
         name = "test-name",
         description = "test-description",
@@ -102,7 +102,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       )
 
       running(application) {
-        val request = FakeRequest(routes.SimpleAPiDeploymentController.deployments())
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.create())
           .withMultipartFormDataBody(
             MultipartFormData(
               dataParts = Map(
@@ -125,7 +125,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       val application = buildApplication()
 
       running(application) {
-        val request = FakeRequest(routes.SimpleAPiDeploymentController.deployments())
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.create())
           .withMultipartFormDataBody(
             MultipartFormData(
               dataParts = Map(
@@ -142,18 +142,104 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         status(result) mustBe BAD_REQUEST
       }
     }
+  }
 
-    "deployment" - {
-      "must return 200 Ok and a DeploymentResponse" in {
-        val application = buildApplication()
+  "update" - {
+    "must return 200 Ok and a DeploymentsResponse when the request is valid" in {
+      val application = buildApplication()
 
-        running(application) {
-          val request = FakeRequest(routes.SimpleAPiDeploymentController.deployment("a publisher ref"))
+      val serviceId = "test-service-id"
 
-          val result = route(application, request).value
+      val metadata = UpdateMetadata(
+        description = "test-description",
+        status = "test-status"
+      )
 
-          status(result) mustBe OK
-        }
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.update(serviceId))
+          .withMultipartFormDataBody(
+            MultipartFormData(
+              dataParts = Map(
+                "metadata" -> Seq(Json.toJson(metadata).toString()),
+                "openapi" -> Seq(oas)
+              ),
+              files = Seq.empty,
+              badParts = Seq.empty
+            )
+          )
+
+        val result = route(application, request).value
+
+        status(result) mustBe OK
+        contentAsJson(result) mustBe Json.toJson(DeploymentsResponse(serviceId))
+      }
+    }
+
+    "must return 400 BadRequest and a ValidationFailuresResponse when the OAS document is invalid" in {
+      val application = buildApplication()
+
+      val serviceId = "test-service-id"
+
+      val metadata = UpdateMetadata(
+        description = "test-description",
+        status = "test-status"
+      )
+
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.update(serviceId))
+          .withMultipartFormDataBody(
+            MultipartFormData(
+              dataParts = Map(
+                "metadata" -> Seq(Json.toJson(metadata).toString()),
+                "openapi" -> Seq("rhubarb")
+              ),
+              files = Seq.empty,
+              badParts = Seq.empty
+            )
+          )
+
+        val result = route(application, request).value
+
+        status(result) mustBe BAD_REQUEST
+        contentAsJson(result) mustBe Json.toJson(FailuresResponse.cannedResponse)
+      }
+    }
+
+    "must return 400 Bad Request when the metadata is invalid" in {
+      val application = buildApplication()
+
+      val serviceId = "test-service-id"
+
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.update(serviceId))
+          .withMultipartFormDataBody(
+            MultipartFormData(
+              dataParts = Map(
+                "metadata" -> Seq(Json.obj().toString()),
+                "openapi" -> Seq(oas)
+              ),
+              files = Seq.empty,
+              badParts = Seq.empty
+            )
+          )
+
+        val result = route(application, request).value
+
+        status(result) mustBe BAD_REQUEST
+      }
+    }
+  }
+
+  "deployment" - {
+    "must return 200 Ok and a DeploymentResponse" in {
+      val application = buildApplication()
+
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.deployment("a publisher ref"))
+
+        val result = route(application, request).value
+
+        status(result) mustBe OK
       }
     }
   }
