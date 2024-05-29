@@ -245,7 +245,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
   }
 
   "deploymentFrom" - {
-    "must return 200 Ok and a DeploymentResponse on success" in {
+    "must return 200 Ok and a DeploymentsResponse on success" in {
       val application = buildApplication()
 
       val deploymentFrom = DeploymentFrom(
