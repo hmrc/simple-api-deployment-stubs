@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import play.api.mvc.MultipartFormData
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentsResponse, FailuresResponse, UpdateMetadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentsResponse, FailuresResponse, UpdateMetadata}
 
 class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with OptionValues {
 
@@ -240,6 +240,38 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         val result = route(application, request).value
 
         status(result) mustBe OK
+      }
+    }
+  }
+
+  "deploymentFrom" - {
+    "must return 200 Ok and a DeploymentResponse on success" in {
+      val application = buildApplication()
+
+      val deploymentFrom = DeploymentFrom(
+        env = "test-env",
+        serviceId = "test-service-id"
+      )
+
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.deploymentFrom())
+          .withJsonBody(Json.toJson(deploymentFrom))
+        val result = route(application, request).value
+
+        status(result) mustBe OK
+        contentAsJson(result) mustBe Json.toJson(DeploymentsResponse.apply(deploymentFrom.serviceId))
+      }
+    }
+
+    "must return 400 Bad Request if the request body is invalid" in {
+      val application = buildApplication()
+
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.deploymentFrom())
+          .withJsonBody(Json.obj())
+        val result = route(application, request).value
+
+        status(result) mustBe BAD_REQUEST
       }
     }
   }
