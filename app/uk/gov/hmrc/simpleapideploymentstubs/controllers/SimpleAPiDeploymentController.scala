@@ -20,10 +20,10 @@ import com.google.inject.{Inject, Singleton}
 import io.swagger.v3.parser.OpenAPIV3Parser
 import io.swagger.v3.parser.core.models.ParseOptions
 import play.api.libs.Files
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentResponse, DeploymentsResponse, FailuresResponse, UpdateMetadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentResponse, DeploymentsResponse, FailuresResponse, UpdateMetadata}
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
@@ -83,6 +83,14 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
 
   def deployment(publisherReference: String): Action[AnyContent] = Action {
     Ok(Json.toJson(DeploymentResponse.apply(publisherReference)))
+  }
+
+  def deploymentFrom(): Action[JsValue] = Action(parse.json) {
+    implicit request =>
+      request.body.validate[DeploymentFrom].fold(
+        _ => BadRequest,
+        deploymentFrom => Ok(Json.toJson(DeploymentsResponse.apply(deploymentFrom.serviceId)))
+      )
   }
 
 }
