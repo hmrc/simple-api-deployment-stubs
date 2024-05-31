@@ -20,12 +20,12 @@ import play.api.libs.json.{Format, Json}
 
 import java.time.LocalDateTime
 
-case class DeploymentResponse(id: String, deploymentTimestamp: LocalDateTime)
+case class DeploymentResponse(id: String, oasVersion: String, deploymentTimestamp: LocalDateTime)
 
 object DeploymentResponse {
 
   def apply(publisherReference: String): DeploymentResponse = {
-    DeploymentResponse(publisherReference, LocalDateTime.now())
+    DeploymentResponse(publisherReference, "1", LocalDateTime.now())
   }
 
   implicit val formatDeploymentResponse: Format[DeploymentResponse] = Json.format[DeploymentResponse]
