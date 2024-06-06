@@ -26,7 +26,7 @@ case class CreateMetadata(
   passthrough: Option[Boolean] = None,
   status: Option[String] = None,
   domain: Option[String] = None,
-  subDomain: Option[String] = None
+  subdomain: Option[String] = None
 )
 
 object CreateMetadata {
