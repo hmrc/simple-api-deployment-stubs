@@ -27,7 +27,7 @@ case class CreateMetadata(
   status: Option[String] = None,
   domain: Option[String] = None,
   subdomain: Option[String] = None,
-  hods: Seq[String] = Seq.empty
+  backends: Seq[String] = Seq.empty
 )
 
 object CreateMetadata {
