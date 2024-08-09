@@ -24,7 +24,7 @@ import play.api.libs.Files
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentResponse, DeploymentsResponse, FailuresResponse, UpdateMetadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentResponse, DeploymentsResponse, DetailsResponse, FailuresResponse, UpdateMetadata}
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) with Logging {
@@ -98,6 +98,10 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
         _ => BadRequest,
         deploymentFrom => Ok(Json.toJson(DeploymentsResponse.apply(deploymentFrom.serviceId)))
       )
+  }
+
+  def getDeploymentDetails(serviceId: String): Action[AnyContent] = Action {
+    Ok(Json.toJson(DetailsResponse.cannedResponse))
   }
 
 }

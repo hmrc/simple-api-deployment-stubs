@@ -23,7 +23,9 @@ case class UpdateMetadata(
   status: String,
   domain: Option[String] = None,
   subdomain: Option[String] = None,
-  backends: Seq[String] = Seq.empty
+  backends: Seq[String] = Seq.empty,
+  prefixestoremove: Seq[String],
+  egressprefix: String
 )
 
 object UpdateMetadata {

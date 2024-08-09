@@ -18,22 +18,28 @@ package uk.gov.hmrc.simpleapideploymentstubs.models
 
 import play.api.libs.json.{Format, Json}
 
-case class CreateMetadata(
-  lineOfBusiness: String,
-  name: String,
+case class DetailsResponse(
   description: String,
-  egress: String,
-  passthrough: Option[Boolean] = None,
-  status: Option[String] = None,
-  domain: Option[String] = None,
-  subdomain: Option[String] = None,
-  backends: Seq[String] = Seq.empty,
-  prefixestoremove: Seq[String],
-  egressprefix: String
+  status: String,
+  domain: String,
+  subdomain: String,
+  backends: Seq[String],
+  egressprefix: String,
+  prefixestoremove: Seq[String]
 )
 
-object CreateMetadata {
+object DetailsResponse {
 
-  implicit val formatCreateMetadata: Format[CreateMetadata] = Json.format[CreateMetadata]
+  val cannedResponse: DetailsResponse = DetailsResponse(
+    description = "A short description of the API",
+    status = "ALPHA",
+    domain = "8",
+    subdomain = "8.1",
+    backends = Seq("NPS"),
+    egressprefix = "/prefix",
+    prefixestoremove = Seq("/v1")
+  )
+
+  implicit val formatDetailsResponse: Format[DetailsResponse] = Json.format[DetailsResponse]
 
 }
