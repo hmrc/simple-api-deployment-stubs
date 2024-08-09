@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import play.api.mvc.MultipartFormData
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentsResponse, FailuresResponse, UpdateMetadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentsResponse, DetailsResponse, FailuresResponse, UpdateMetadata}
 
 class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with OptionValues {
 
@@ -69,8 +69,8 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         name = "test-name",
         description = "test-description",
         egress = "test-egress",
-        prefixesToRemove = Seq("test-prefix-1"),
-        egressPrefix = ""
+        prefixestoremove = Seq("test-prefix-1"),
+        egressprefix = ""
       )
 
       running(application) {
@@ -101,8 +101,8 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         name = "test-name",
         description = "test-description",
         egress = "test-egress",
-        prefixesToRemove = Seq("test-prefix-1"),
-        egressPrefix = ""
+        prefixestoremove = Seq("test-prefix-1"),
+        egressprefix = ""
       )
 
       running(application) {
@@ -156,7 +156,9 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
 
       val metadata = UpdateMetadata(
         description = "test-description",
-        status = "test-status"
+        status = "test-status",
+        prefixestoremove = Seq("test-prefix-1", "test-prefix-2"),
+        egressprefix = "test-egress-prefix"
       )
 
       running(application) {
@@ -186,7 +188,9 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
 
       val metadata = UpdateMetadata(
         description = "test-description",
-        status = "test-status"
+        status = "test-status",
+        prefixestoremove = Seq("test-prefix-1", "test-prefix-2"),
+        egressprefix = "test-egress-prefix"
       )
 
       running(application) {
@@ -276,6 +280,20 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         val result = route(application, request).value
 
         status(result) mustBe BAD_REQUEST
+      }
+    }
+  }
+
+  "getDeploymentDetails" - {
+    "must return 200 Ok can a DetailsResponse" in {
+      val application = buildApplication()
+
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.getDeploymentDetails("test-service-id"))
+        val result = route(application, request).value
+
+        status(result) mustBe OK
+        contentAsJson(result) mustBe Json.toJson(DetailsResponse.cannedResponse)
       }
     }
   }
