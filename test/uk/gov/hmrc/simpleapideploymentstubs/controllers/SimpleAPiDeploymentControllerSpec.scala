@@ -68,7 +68,9 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         lineOfBusiness = "test-lob",
         name = "test-name",
         description = "test-description",
-        egress = "test-egress"
+        egress = "test-egress",
+        prefixesToRemove = Seq("test-prefix-1"),
+        egressPrefix = ""
       )
 
       running(application) {
@@ -98,7 +100,9 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         lineOfBusiness = "test-lob",
         name = "test-name",
         description = "test-description",
-        egress = "test-egress"
+        egress = "test-egress",
+        prefixesToRemove = Seq("test-prefix-1"),
+        egressPrefix = ""
       )
 
       running(application) {

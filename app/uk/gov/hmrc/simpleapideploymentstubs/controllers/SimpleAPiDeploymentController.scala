@@ -19,6 +19,7 @@ package uk.gov.hmrc.simpleapideploymentstubs.controllers
 import com.google.inject.{Inject, Singleton}
 import io.swagger.v3.parser.OpenAPIV3Parser
 import io.swagger.v3.parser.core.models.ParseOptions
+import play.api.Logging
 import play.api.libs.Files
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
@@ -26,7 +27,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentResponse, DeploymentsResponse, FailuresResponse, UpdateMetadata}
 
 @Singleton
-class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
+class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) with Logging {
 
   def validate(): Action[String] = Action(parse.tolerantText) {
     request =>
@@ -44,13 +45,16 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
         case (Some(Seq(metadata)), Some(Seq(openapi))) =>
           Json.parse(metadata).validate[CreateMetadata].fold(
             _ => BadRequest,
-            validMetadata =>
+            validMetadata => {
+              logger.info(s"JSON CreateMetadata body: ${Json.prettyPrint(Json.toJson(validMetadata))}")
+
               if (validOas(openapi)) {
                 Ok(Json.toJson(DeploymentsResponse(validMetadata.name)))
               }
               else {
                 BadRequest(Json.toJson(FailuresResponse.cannedResponse))
               }
+            }
           )
         case _ => BadRequest
       }
@@ -62,13 +66,16 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
         case (Some(Seq(metadata)), Some(Seq(openapi))) =>
           Json.parse(metadata).validate[UpdateMetadata].fold(
             _ => BadRequest,
-            _ =>
+            validMetadata => {
+              logger.info(s"JSON CreateMetadata body: ${Json.prettyPrint(Json.toJson(validMetadata))}")
+
               if (validOas(openapi)) {
                 Ok(Json.toJson(DeploymentsResponse(serviceId)))
               }
               else {
                 BadRequest(Json.toJson(FailuresResponse.cannedResponse))
               }
+            }
           )
         case _ => BadRequest
       }
