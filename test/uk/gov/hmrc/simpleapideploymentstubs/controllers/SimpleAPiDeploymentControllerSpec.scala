@@ -69,8 +69,8 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         name = "test-name",
         description = "test-description",
         egress = "test-egress",
-        prefixestoremove = Seq("test-prefix-1"),
-        egressprefix = ""
+        prefixesToRemove = Seq("test-prefix-1"),
+        egressPrefix = ""
       )
 
       running(application) {
@@ -101,8 +101,8 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         name = "test-name",
         description = "test-description",
         egress = "test-egress",
-        prefixestoremove = Seq("test-prefix-1"),
-        egressprefix = ""
+        prefixesToRemove = Seq("test-prefix-1"),
+        egressPrefix = ""
       )
 
       running(application) {
@@ -157,8 +157,8 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       val metadata = UpdateMetadata(
         description = "test-description",
         status = "test-status",
-        prefixestoremove = Seq("test-prefix-1", "test-prefix-2"),
-        egressprefix = "test-egress-prefix"
+        prefixesToRemove = Seq("test-prefix-1", "test-prefix-2"),
+        egressPrefix = "test-egress-prefix"
       )
 
       running(application) {
@@ -189,8 +189,8 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
       val metadata = UpdateMetadata(
         description = "test-description",
         status = "test-status",
-        prefixestoremove = Seq("test-prefix-1", "test-prefix-2"),
-        egressprefix = "test-egress-prefix"
+        prefixesToRemove = Seq("test-prefix-1", "test-prefix-2"),
+        egressPrefix = "test-egress-prefix"
       )
 
       running(application) {

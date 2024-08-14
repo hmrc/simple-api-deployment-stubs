@@ -67,7 +67,7 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
           Json.parse(metadata).validate[UpdateMetadata].fold(
             _ => BadRequest,
             validMetadata => {
-              logger.info(s"JSON CreateMetadata body: ${Json.prettyPrint(Json.toJson(validMetadata))}")
+              logger.info(s"JSON UpdateMetadata body: ${Json.prettyPrint(Json.toJson(validMetadata))}")
 
               if (validOas(openapi)) {
                 Ok(Json.toJson(DeploymentsResponse(serviceId)))
