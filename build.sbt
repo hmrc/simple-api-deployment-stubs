@@ -13,6 +13,7 @@ lazy val microservice = Project("simple-api-deployment-stubs", file("."))
   )
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
+  .settings(scalacOptions := scalacOptions.value.diff(Seq("-Wunused:all")))
 
 lazy val it = project
   .enablePlugins(PlayScala)
