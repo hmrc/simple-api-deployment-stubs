@@ -24,8 +24,8 @@ case class DetailsResponse(
   domain: String,
   subdomain: String,
   backends: Seq[String],
-  egressprefix: String,
-  prefixestoremove: Seq[String]
+  egressPrefix: String,
+  prefixesToRemove: Seq[String]
 )
 
 object DetailsResponse {
@@ -36,8 +36,8 @@ object DetailsResponse {
     domain = "8",
     subdomain = "8.1",
     backends = Seq("NPS"),
-    egressprefix = "/prefix",
-    prefixestoremove = Seq("/v1")
+    egressPrefix = "/prefix",
+    prefixesToRemove = Seq("/v1")
   )
 
   implicit val formatDetailsResponse: Format[DetailsResponse] = Json.format[DetailsResponse]
