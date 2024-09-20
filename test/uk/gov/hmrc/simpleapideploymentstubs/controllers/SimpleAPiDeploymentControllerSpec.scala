@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import play.api.mvc.MultipartFormData
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.simpleapideploymentstubs.models.{CreateMetadata, DeploymentFrom, DeploymentsResponse, DetailsResponse, FailuresResponse, UpdateMetadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{ApiDeployment, CreateMetadata, DeploymentFrom, DeploymentsResponse, DetailsResponse, FailuresResponse, UpdateMetadata}
 
 class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with OptionValues {
 
@@ -294,6 +294,20 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
 
         status(result) mustBe OK
         contentAsJson(result) mustBe Json.toJson(DetailsResponse.cannedResponse)
+      }
+    }
+  }
+
+  "getOpenApiDeployments" - {
+    "must return 200 Ok and a canned response" in {
+      val application = buildApplication()
+
+      running(application) {
+        val request = FakeRequest(routes.SimpleAPiDeploymentController.getOpenApiDeployments())
+        val result = route(application, request).value
+
+        status(result) mustBe OK
+        contentAsJson(result) mustBe Json.toJson(ApiDeployment.cannedResponse)
       }
     }
   }
