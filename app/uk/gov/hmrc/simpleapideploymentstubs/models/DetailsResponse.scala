@@ -24,7 +24,7 @@ case class DetailsResponse(
   domain: String,
   subdomain: String,
   backends: Seq[String],
-  egressPrefix: String,
+  egressMappings: Option[Seq[EgressMapping]],
   prefixesToRemove: Seq[String]
 )
 
@@ -36,7 +36,7 @@ object DetailsResponse {
     domain = "8",
     subdomain = "8.1",
     backends = Seq("NPS"),
-    egressPrefix = "/prefix",
+    egressMappings = Some(Seq(EgressMapping("prefix", "egress-prefix"))),
     prefixesToRemove = Seq("/v1")
   )
 

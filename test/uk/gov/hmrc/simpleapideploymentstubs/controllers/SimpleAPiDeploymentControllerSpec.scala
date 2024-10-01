@@ -24,8 +24,8 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.mvc.MultipartFormData
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.simpleapideploymentstubs.models.{ApiDeployment, CreateMetadata, DeploymentFrom, DeploymentsResponse, DetailsResponse, FailuresResponse, UpdateMetadata}
+import play.api.test.Helpers.*
+import uk.gov.hmrc.simpleapideploymentstubs.models.{ApiDeployment, CreateMetadata, DeploymentFrom, DeploymentsResponse, DetailsResponse, EgressMapping, FailuresResponse, UpdateMetadata}
 
 class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with OptionValues {
 
@@ -70,7 +70,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         description = "test-description",
         egress = "test-egress",
         prefixesToRemove = Seq("test-prefix-1"),
-        egressPrefix = ""
+        egressMappings = Some(Seq(EgressMapping("prefix", "egress-prefix")))
       )
 
       running(application) {
@@ -102,7 +102,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         description = "test-description",
         egress = "test-egress",
         prefixesToRemove = Seq("test-prefix-1"),
-        egressPrefix = ""
+        egressMappings = None
       )
 
       running(application) {
@@ -158,7 +158,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         description = "test-description",
         status = "test-status",
         prefixesToRemove = Seq("test-prefix-1", "test-prefix-2"),
-        egressPrefix = "test-egress-prefix"
+        egressMappings = Some(Seq(EgressMapping("prefix", "egress-prefix")))
       )
 
       running(application) {
@@ -190,7 +190,7 @@ class SimpleAPiDeploymentControllerSpec extends AnyFreeSpec with Matchers with O
         description = "test-description",
         status = "test-status",
         prefixesToRemove = Seq("test-prefix-1", "test-prefix-2"),
-        egressPrefix = "test-egress-prefix"
+        egressMappings = Some(Seq(EgressMapping("prefix", "egress-prefix")))
       )
 
       running(application) {
