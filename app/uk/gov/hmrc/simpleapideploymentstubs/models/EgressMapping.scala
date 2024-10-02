@@ -18,18 +18,13 @@ package uk.gov.hmrc.simpleapideploymentstubs.models
 
 import play.api.libs.json.{Format, Json}
 
-case class UpdateMetadata(
-  description: String,
-  status: String,
-  domain: Option[String] = None,
-  subdomain: Option[String] = None,
-  backends: Seq[String] = Seq.empty,
-  prefixesToRemove: Seq[String],
-  egressMappings: Option[Seq[EgressMapping]]
+case class EgressMapping(
+    prefix: String,
+    egressPrefix: String
 )
 
-object UpdateMetadata {
+object EgressMapping {
 
-  implicit val formatUpdateMetadata: Format[UpdateMetadata] = Json.format[UpdateMetadata]
+  implicit val formatEgressMapping: Format[EgressMapping] = Json.format[EgressMapping]
 
 }
