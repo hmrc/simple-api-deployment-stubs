@@ -36,7 +36,7 @@ object DetailsResponse {
     domain = "8",
     subdomain = "8.1",
     backends = Seq("NPS"),
-    egressMappings = Some(Seq(EgressMapping("prefix", "egress-prefix"))),
+    egressMappings = Some(Seq(EgressMapping("/prefix", "/egress-prefix"))),
     prefixesToRemove = Seq("/v1")
   )
 
