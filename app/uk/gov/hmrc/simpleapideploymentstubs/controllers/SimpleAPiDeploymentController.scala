@@ -24,7 +24,7 @@ import play.api.libs.Files
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.simpleapideploymentstubs.models.{ApiDeployment, CreateMetadata, DeploymentFrom, DeploymentResponse, DeploymentsResponse, DetailsResponse, FailuresResponse, UpdateMetadata}
+import uk.gov.hmrc.simpleapideploymentstubs.models.{ApiDeployment, CreateMetadata, DeploymentFrom, DeploymentResponse, DeploymentsResponse, DetailsResponse, EgressGateway, FailuresResponse, UpdateMetadata}
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) with Logging {
@@ -108,4 +108,7 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
     Ok(Json.toJson(ApiDeployment.cannedResponse))
   }
 
+  def getEgressGateways(): Action[AnyContent] = Action {
+    Ok(Json.toJson(EgressGateway.cannedResponse))
+  }
 }
