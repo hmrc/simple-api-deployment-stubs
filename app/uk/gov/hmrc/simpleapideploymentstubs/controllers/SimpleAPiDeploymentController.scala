@@ -24,7 +24,11 @@ import play.api.libs.Files
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, MultipartFormData}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+<<<<<<< Updated upstream
 import uk.gov.hmrc.simpleapideploymentstubs.models.{ApiDeployment, CreateMetadata, DeploymentFrom, DeploymentResponse, DeploymentsResponse, DetailsResponse, EgressGateway, FailuresResponse, UpdateMetadata}
+=======
+import uk.gov.hmrc.simpleapideploymentstubs.models.*
+>>>>>>> Stashed changes
 
 @Singleton
 class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends BackendController(cc) with Logging {
@@ -49,7 +53,19 @@ class SimpleAPiDeploymentController @Inject()(cc: ControllerComponents) extends 
               logger.info(s"JSON CreateMetadata body: ${Json.prettyPrint(Json.toJson(validMetadata))}")
 
               if (validOas(openapi)) {
-                Ok(Json.toJson(DeploymentsResponse(validMetadata.name)))
+                Ok(Json.toJson(InvalidOasResponse(
+                  FailuresResponse(
+                    code = "code",
+                    reason = "reason",
+                    errors = Some(Seq(
+                      Error(
+                        `type` =  "HIP",
+                        message = "message"
+                      )
+                    ))
+                  )
+                )))
+//                Ok(Json.toJson(DeploymentsResponse(validMetadata.name)))
               }
               else {
                 BadRequest(Json.toJson(FailuresResponse.cannedResponse))

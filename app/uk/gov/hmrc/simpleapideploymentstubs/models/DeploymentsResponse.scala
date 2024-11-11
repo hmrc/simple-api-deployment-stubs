@@ -32,3 +32,11 @@ object DeploymentsResponse {
   implicit val formatDeploymentsResponse: Format[DeploymentsResponse] = Json.format[DeploymentsResponse]
 
 }
+
+case class InvalidOasResponse(failure: FailuresResponse)
+
+object InvalidOasResponse {
+
+  implicit val formatInvalidOasResponse: Format[InvalidOasResponse] = Json.format[InvalidOasResponse]
+
+}
